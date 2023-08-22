@@ -1,23 +1,48 @@
 document.getElementById('left').addEventListener('click', left)
 document.getElementById('right').addEventListener('click', right)
-let locPanel=localStorage.getItem('panel')
-if(!locPanel){
-    locPanel='1'
+
+//Setting js variable to local mem value if available, otherwise set to 1
+localStorage.setItem('panel','panel-1')
+let locPan=localStorage.getItem('panel')
+if(!locPan){
+    locPan='1'
 }
-console.log(locPanel)
+console.log(locPan)
 
-let url=`https://localhost:2323/choice`
+let url=`http://localhost:2323/choice/panel-1`
+if(document.getElementById('prompt').innerText==''){
+    starter()
+}
 
-
-async function left(){
-    locPan=locPan.concat('1')
-    url=url.concat(`?${locPan}`)
-    localStorage.setItem(panelChoice,locPan )
+async function starter(){
+    url=`http://localhost:2323/choice/${locPan}`
+    console.log(url)
+    localStorage.setItem('panel',locPan )
     try {
         const response= await fetch(url)
         const data = await response.json()
         console.log(data)
-        document.querySelector('#prompt').innerText=data
+        document.getElementById('prompt').innerText=data.prompt
+        document.getElementById('opt1').innerText=data.opt1
+        document.getElementById('opt2').innerText=data.opt2
+
+    }catch(error){
+        console.log(error)
+    }
+}
+async function left(){
+    locPan=locPan+'1'
+    url=`http://localhost:2323/choice/${locPan}`
+    console.log(url)
+    localStorage.setItem('panel',locPan )
+    try {
+        const response= await fetch(url)
+        const data = await response.json()
+        console.log(data)
+        document.getElementById('prompt').innerText=data.prompt
+        document.getElementById('opt1').innerText=data.opt1
+        document.getElementById('opt2').innerText=data.opt2
+
     }catch(error){
         console.log(error)
     }
@@ -31,7 +56,7 @@ async function right(){
         const data = await response.json()
         console.log(data)
         document.querySelector('#result').innerText=data
-    }catch(eror){
+    }catch(error){
         console.log(error)
     }
 }
