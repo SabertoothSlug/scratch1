@@ -25,6 +25,7 @@ async function starter(){
         document.getElementById('prompt').innerText=data.prompt
         document.getElementById('opt1').innerText=data.opt1
         document.getElementById('opt2').innerText=data.opt2
+        //yayo
 
     }catch(error){
         console.log(error)
